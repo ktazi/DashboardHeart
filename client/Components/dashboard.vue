@@ -18,18 +18,30 @@
         <th>Heart Rhythm BPM
         <th>Heart Pulse
         <th>P-Wave
-        <th>Sa02
         <th>Timestamp
+        <th>Sa02
         <th>Event
       </thead>
       <tbody>
       <tr v-for="entry in logs.filter(el => el.DeviceID==deviceId)" >
-        <td >{{entry.DeviceID}}</td>
-        <td>{{entry.HeartBPM}}</td>
-        <td>{{entry.HeartPulse}}</td>
-        <td>{{entry.PWave}}</td>
-        <td>{{entry.Timestamp}}</td>
-        <td>{{entry.Sa02}}</td>
+        <td v-if="entry.evnt==='RAS'" style="color: greenyellow">{{entry.DeviceID}}</td>
+        <td v-else-if="entry.evnt==='Heart failure'" style="color: crimson">{{entry.DeviceID}}</td>
+        <td v-else style="color: darkorange">{{entry.DeviceID}}</td>
+        <td v-if="entry.evnt==='RAS'" style="color: greenyellow">{{entry.HeartBPM}}</td>
+        <td v-else-if="entry.evnt==='Heart failure'" style="color: crimson">{{entry.HeartBPM}}</td>
+        <td v-else style="color: darkorange">{{entry.HeartBPM}}</td>
+        <td v-if="entry.evnt==='RAS'" style="color: greenyellow">{{entry.HeartPulse}}</td>
+        <td v-else-if="entry.evnt==='Heart failure'" style="color: crimson">{{entry.HeartPulse}}</td>
+        <td v-else style="color: darkorange">{{entry.HeartPulse}}</td>
+        <td v-if="entry.evnt==='RAS'" style="color: greenyellow">{{entry.PWave}}</td>
+        <td v-else-if="entry.evnt==='Heart failure'" style="color: crimson">{{entry.PWave}}</td>
+        <td v-else style="color: darkorange">{{entry.PWave}}</td>
+        <td v-if="entry.evnt==='RAS'" style="color: greenyellow">{{entry.Timestamp}}</td>
+        <td v-else-if="entry.evnt==='Heart failure'" style="color: crimson">{{entry.Timestamp}}</td>
+        <td v-else style="color: darkorange">{{entry.Timestamp}}</td>
+        <td v-if="entry.evnt==='RAS'" style="color: greenyellow">{{entry.Sa02}}</td>
+        <td v-else-if="entry.evnt==='Heart failure'" style="color: crimson">{{entry.Sa02}}</td>
+        <td v-else style="color: darkorange">{{entry.Sa02}}</td>
         <td v-if="entry.evnt==='RAS'" style="color: greenyellow">{{entry.evnt}}</td>
         <td v-else-if="entry.evnt==='Heart failure'" style="color: crimson">{{entry.evnt}}</td>
         <td v-else style="color: darkorange">{{entry.evnt}}</td>
