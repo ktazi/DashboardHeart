@@ -4,7 +4,6 @@ const router = express.Router()
 module.exports = router
 
 /* TODO : Replace the body of the function with the request from the IOTA */
-/* TODO : Add login and device type, modifiers only admins require */
 
 router.post('/FetchData',async(req, res)=>{
     res.json([
