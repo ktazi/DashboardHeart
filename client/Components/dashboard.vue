@@ -34,7 +34,7 @@
         <th>Event
       </thead>
       <tbody>
-      <tr v-for="entry in logs.filter(el => el.DeviceID==deviceId)" >
+      <tr v-for="entry in logs" >
         <td v-if="entry.evnt==='RAS'" style="color: greenyellow">{{entry.DeviceID}}</td>
         <td v-else-if="entry.evnt==='Heart failure'" style="color: crimson">{{entry.DeviceID}}</td>
         <td v-else style="color: darkorange">{{entry.DeviceID}}</td>
@@ -75,6 +75,7 @@ module.exports = {
   mounted: async function () {
     let mes = await axios.post('/api/FetchData');
     this.logs = mes.data
+    console.log(mes)
   },
   methods : {
     re : async function(){
