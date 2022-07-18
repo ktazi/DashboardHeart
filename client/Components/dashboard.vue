@@ -58,7 +58,6 @@
         <td v-if="entry.evnt==='RAS'" style="color: greenyellow">{{entry.evnt}}</td>
         <td v-else-if="entry.evnt==='Heart failure'" style="color: crimson">{{entry.evnt}}</td>
         <td v-else style="color: darkorange">{{entry.evnt}}</td>
-
       </tr>
       </tbody>
     </table>
