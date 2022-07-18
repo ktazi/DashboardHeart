@@ -5,12 +5,6 @@
     DASHBOARD
   </h1>
   <div class="d-flex flex-row justify-content-center">
-    <div>
-      <div class="form__group field" style="max-width: 300px;">
-        <input type="text" class="form__field" name="ID of device" id="accountname">
-        <label for="accountname" class="form__label">Account name</label>
-      </div>
-    </div>
     <!-- Input to visualize the data from each machine -->
     <div>
       <div class="form__group field" style="max-width: 300px;">
@@ -19,7 +13,7 @@
       </div>
     </div>
     <!-- Refresh button -->
-    <button class="button-78 mr-5" v-on:click="re">Refresh</button>
+    <button class="button-78 mr-5" v-on:click="refrsh">Refresh</button>
   </div>
   <div class="mr-auto ml-auto" style="max-width: fit-content">
     <table class="table-responsive" style=" max-width: 100%;max-height: 500px">
@@ -31,6 +25,8 @@
         <th>P-Wave
         <th>Timestamp
         <th>Sa02
+        <th>Systolic pressure
+        <th>Diastolic pressure
         <th>Event
       </thead>
       <tbody>
@@ -53,9 +49,16 @@
         <td v-if="entry.evnt==='RAS'" style="color: greenyellow">{{entry.Sa02}}</td>
         <td v-else-if="entry.evnt==='Heart failure'" style="color: crimson">{{entry.Sa02}}</td>
         <td v-else style="color: darkorange">{{entry.Sa02}}</td>
+        <td v-if="entry.evnt==='RAS'" style="color: greenyellow">{{entry.pressSys}}</td>
+        <td v-else-if="entry.evnt==='Heart failure'" style="color: crimson">{{entry.pressSys}}</td>
+        <td v-else style="color: darkorange">{{entry.pressSys}}</td>
+        <td v-if="entry.evnt==='RAS'" style="color: greenyellow">{{entry.pressDias}}</td>
+        <td v-else-if="entry.evnt==='Heart failure'" style="color: crimson">{{entry.pressDias}}</td>
+        <td v-else style="color: darkorange">{{entry.pressDias}}</td>
         <td v-if="entry.evnt==='RAS'" style="color: greenyellow">{{entry.evnt}}</td>
         <td v-else-if="entry.evnt==='Heart failure'" style="color: crimson">{{entry.evnt}}</td>
         <td v-else style="color: darkorange">{{entry.evnt}}</td>
+
       </tr>
       </tbody>
     </table>
@@ -73,14 +76,19 @@ module.exports = {
     }
   },
   mounted: async function () {
-    let mes = await axios.post('/api/FetchData');
-    this.logs = mes.data
-    console.log(mes)
+    await this.re()
   },
   methods : {
     re : async function(){
-      let mes = await axios.post('/api/FetchData2');
-      this.logs = mes.data
+      var test = this
+      setInterval(async function(){
+        let mes = await axios.get('/api/FetchData', {headers:{"device" : test.deviceId}});
+        test.logs = mes.data
+      }, 5000)
+    },
+    refrsh : async function(){
+      let mes = await axios.get('/api/FetchData', {headers:{"device" : this.deviceId}});
+      test.logs = mes.data
     }
   }
 }

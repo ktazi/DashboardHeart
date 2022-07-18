@@ -1,392 +1,28 @@
 const express = require('express')
 const router = express.Router()
 const Web3 = require('web3');
-var sc_ADDRESS = "0xd9145CCE52D386f254917e481eB44e9943F39138";
-var sc_ABI = JSON.parse('[' +
-    '{' +
-    '"inputs": [' +
-    '{' +
-    '"internalType": "address",' +
-    '"name": "ad",' +
-    '"type": "address"' +
-    '}' +
-    '],' +
-    '"name": "addAdmin",' +
-    '"outputs": [' +
-    '{' +
-    '"internalType": "bool",' +
-    '"name": "",' +
-    '"type": "bool"' +
-    '}' +
-    '],' +
-    '"stateMutability": "nonpayable",' +
-    '"type": "function"' +
-    '},' +
-    '{' +
-    '"inputs": [' +
-    '{' +
-    '"internalType": "uint256",' +
-    '"name": "id",' +
-    '"type": "uint256"' +
-    '}' +
-    '],' +
-    '"name": "addDevice",' +
-    '"outputs": [' +
-    '{' +
-    '"internalType": "uint256",' +
-    '"name": "",' +
-    '"type": "uint256"' +
-    '}' +
-    '],' +
-    '"stateMutability": "nonpayable",' +
-    '"type": "function"' +
-    '},' +
-    '{' +
-    '"inputs": [' +
-    '{' +
-    '"internalType": "uint256",' +
-    '"name": "deviceId",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"internalType": "uint256",' +
-    '"name": "heartRythm",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"internalType": "bool",' +
-    '"name": "heartPulse",' +
-    '"type": "bool"' +
-    '},' +
-    '{' +
-    '"internalType": "bool",' +
-    '"name": "pwave",' +
-    '"type": "bool"' +
-    '},' +
-    '{' +
-    '"internalType": "uint256",' +
-    '"name": "sao2",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"internalType": "uint256",' +
-    '"name": "pressureS",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"internalType": "uint256",' +
-    '"name": "pressureD",' +
-    '"type": "uint256"' +
-    '}' +
-    '],' +
-    '"name": "addRecord",' +
-    '"outputs": [],' +
-    '"stateMutability": "nonpayable",' +
-    '"type": "function"' +
-    '},' +
-    '{' +
-    '"inputs": [],' +
-    '"stateMutability": "nonpayable",' +
-    '"type": "constructor"' +
-    '},' +
-    '{' +
-    '"anonymous": false,' +
-    '"inputs": [' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "deviceId",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "index",' +
-    '"type": "uint256"' +
-    '}' +
-    '],' +
-    '"name": "HeartFailure",' +
-    '"type": "event"' +
-    '},' +
-    '{' +
-    '"anonymous": false,' +
-    '"inputs": [' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "deviceId",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "index",' +
-    '"type": "uint256"' +
-    '}' +
-    '],' +
-    '"name": "HeartPulseAbnormal",' +
-    '"type": "event"' +
-    '},' +
-    '{' +
-    '"anonymous": false,' +
-    '"inputs": [' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "deviceId",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "index",' +
-    '"type": "uint256"' +
-    '}' +
-    '],' +
-    '"name": "HeartRythmAbnormal",' +
-    '"type": "event"' +
-    '},' +
-    '{' +
-    '"anonymous": false,' +
-    '"inputs": [' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "deviceId",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "index",' +
-    '"type": "uint256"' +
-    '}' +
-    '],' +
-    '"name": "HyperTension",' +
-    '"type": "event"' +
-    '},' +
-    '{' +
-    '"anonymous": false,' +
-    '"inputs": [' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "deviceId",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "index",' +
-    '"type": "uint256"' +
-    '}' +
-    '],' +
-    '"name": "HypoTension",' +
-    '"type": "event"' +
-    '},' +
-    '{' +
-    '"anonymous": false,' +
-    '"inputs": [' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "deviceId",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "index",' +
-    '"type": "uint256"' +
-    '}' +
-    '],' +
-    '"name": "PWaveAbnormal",' +
-    '"type": "event"' +
-    '},' +
-    '{' +
-    '"anonymous": false,' +
-    '"inputs": [' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "deviceId",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "index",' +
-    '"type": "uint256"' +
-    '}' +
-    '],' +
-    '"name": "Saturation",' +
-    '"type": "event"' +
-    '},' +
-    '{' +
-    '"anonymous": false,' +
-    '"inputs": [' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "deviceId",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "index",' +
-    '"type": "uint256"' +
-    '}' +
-    '],' +
-    '"name": "SaturationAbnormal",' +
-    '"type": "event"' +
-    '},' +
-    '{' +
-    '"anonymous": false,' +
-    '"inputs": [' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "device",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "index",' +
-    '"type": "uint256"' +
-    '}' +
-    '],' +
-    '"name": "newDevice",' +
-    '"type": "event"' +
-    '},' +
-    '{' +
-    '"anonymous": false,' +
-    '"inputs": [' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "deviceId",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"indexed": false,' +
-    '"internalType": "uint256",' +
-    '"name": "index",' +
-    '"type": "uint256"' +
-    '}' +
-    '],' +
-    '"name": "storeData",' +
-    '"type": "event"' +
-    '},' +
-    '{' +
-    '"inputs": [' +
-    '{' +
-    '"internalType": "uint256",' +
-    '"name": "deviceId",' +
-    '"type": "uint256"' +
-    '}' +
-    '],' +
-    '"name": "getRecordLength",' +
-    '"outputs": [' +
-    '{' +
-    '"internalType": "uint256",' +
-    '"name": "",' +
-    '"type": "uint256"' +
-    '}' +
-    '],' +
-    '"stateMutability": "view",' +
-    '"type": "function"' +
-    '},' +
-    '{' +
-    '"inputs": [' +
-    '{' +
-    '"internalType": "uint256",' +
-    '"name": "",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"internalType": "uint256",' +
-    '"name": "",' +
-    '"type": "uint256"' +
-    '}' +
-    '],' +
-    '"name": "records",' +
-    '"outputs": [' +
-    '{' +
-    '"internalType": "uint256",' +
-    '"name": "heartRythm",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"internalType": "bool",' +
-    '"name": "heartPulse",' +
-    '"type": "bool"' +
-    '},' +
-    '{' +
-    '"internalType": "bool",' +
-    '"name": "pwave",' +
-    '"type": "bool"' +
-    '},' +
-    '{' +
-    '"internalType": "uint256",' +
-    '"name": "timestamp",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"internalType": "uint256",' +
-    '"name": "sao2",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"internalType": "uint256",' +
-    '"name": "pressureSys",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"internalType": "uint256",' +
-    '"name": "pressureDias",' +
-    '"type": "uint256"' +
-    '},' +
-    '{' +
-    '"internalType": "uint256",' +
-    '"name": "index",' +
-    '"type": "uint256"' +
-    '}' +
-    '],' +
-    '"stateMutability": "view",' +
-    '"type": "function"' +
-    '}' +
-    ']')
+var sc_ADDRESS = "0x8bc029F9DB91e35f4bB1CbA8697fBf5d93557A21";
+var sc_ABI = require("./ABI.json")
 var web3 = new Web3();
 web3.setProvider(new web3.providers.HttpProvider('HTTP://127.0.0.1:7545'));
 const ourSC = new web3.eth.Contract(sc_ABI,sc_ADDRESS)
-//setting the account
-web3.eth.defaultAccount = "0x391eCbC2F425a9451865d4cDF62D685B18479DAB";
-
 async function getRecords(dev) {
     size = await ourSC.methods.getRecordLength(dev).call(function(err, res){
-        if (err) {
-            console.log("An error occured", err)
+        if (err)
             return
-        }
         return res
     });
     recs = []
     for (let i = 0; i < size; i++){
         recs.push(await ourSC.methods.records(dev,i).call( function (err, res){
-            if (err) {
-                console.log("An error occured", err)
+            if (err)
                 return
-            }
             return res
         }))
     }
     return recs;
 }
-
 async function getEvents(dev) {
-    var table = []
     var pwave = await ourSC.getPastEvents('PWaveAbnormal',
         {
             filter: {deviceId: dev},
@@ -452,29 +88,61 @@ async function getEvents(dev) {
 }
 
 async function prepareData(dev){
+    accounts = await web3.eth.getAccounts()
+    accounts = accounts[0]
     var rec = await getRecords(dev)
     var evnt = await getEvents(dev)
     var res = []
     for (let i = 0; i < rec.length; i++){
-        res.push({DeviceID:dev, HeartBPM:rec[i].heartRythm, Timestamp:rec[i].timestamp, HeartPulse:rec[i].heartPulse, PWave:rec[i].pwave, pressSys:rec[i].pressureSys, pressDias:rec[i].pressureDias, Sa02:rec[i].sao2, evnt:""})
+        res.push({DeviceID:dev, HeartBPM:rec[i].heartRythm, Timestamp:rec[i].timestamp, HeartPulse:rec[i].heartPulse, PWave:rec[i].pwave, pressSys:rec[i].pressureSys, pressDias:rec[i].pressureDias, Sa02:rec[i].sao2, evnt:"", ind:parseInt(rec[i].index)})
     }
     for (let i = 0; i < evnt.pwave.length; i++){
-        res[parseInt(evnt.pwave[i].index)].evnt = res[parseInt(evnt.pwave[i].index)].evnt + "[PWave Abnormal]"
+        for (let j = 0; j < res.length; j++){
+            if (res[j].ind ===parseInt(evnt.pwave[i].index)){
+                res[j].evnt = res[j].evnt + "[PWave Abnormal]"
+                break
+            }
+        }
     }
     for (let i = 0; i < evnt.heartPulse.length; i++){
-        res[parseInt(evnt.heartPulse[i].index)].evnt = res[parseInt(evnt.heartPulse[i].index)].evnt + "[HeartPulse Abnormal]"
+        for (let j = 0; j < res.length; j++){
+            if (res[j].ind ===parseInt(evnt.heartPulse[i].index)){
+                res[j].evnt = res[j].evnt + "[heartPulse Abnormal]"
+                break
+            }
+        }
     }
     for (let i = 0; i < evnt.heartRythm.length; i++){
-        res[parseInt(evnt.heartRythm[i].index)].evnt = res[parseInt(evnt.heartRythm[i].index)].evnt + "[heartRythm Abnormal]"
+        for (let j = 0; j < res.length; j++){
+            if (res[j].ind ===parseInt(evnt.heartRythm[i].index)){
+                res[j].evnt = res[j].evnt + "[heartRythm Abnormal]"
+                break
+            }
+        }
     }
     for (let i = 0; i < evnt.hyperTension.length; i++){
-        res[parseInt(evnt.hyperTension[i].index)].evnt = res[parseInt(evnt.hyperTension[i].index)].evnt + "[HyperTension]"
+        for (let j = 0; j < res.length; j++){
+            if (res[j].ind ===parseInt(evnt.hyperTension[i].index)){
+                res[j].evnt = res[j].evnt + "[hyperTension]"
+                break
+            }
+        }
     }
     for (let i = 0; i < evnt.hypotension.length; i++){
-        res[parseInt(evnt.hypotension[i].index)].evnt = res[parseInt(evnt.hypotension[i].index)].evnt + "[HypoTension]"
+        for (let j = 0; j < res.length; j++){
+            if (res[j].ind ===parseInt(evnt.hypotension[i].index)){
+                res[j].evnt = res[j].evnt + "[hypotension]"
+                break
+            }
+        }
     }
     for (let i = 0; i < evnt.saturation.length; i++){
-        res[parseInt(evnt.saturation[i].index)].evnt = res[parseInt(evnt.saturation[i].index)].evnt + "[saturation Abnormal]"
+        for (let j = 0; j < res.length; j++){
+            if (res[j].ind ===parseInt(evnt.saturation[i].index)){
+                res[j].evnt = res[j].evnt + "[saturation abnormal]"
+                break
+            }
+        }
     }
     for (let i = 0; i < res.length; i++){
         if (res[i].evnt === ''){
@@ -483,21 +151,9 @@ async function prepareData(dev){
     }
     return res
 }
+
+router.get('/FetchData',async(req, res)=>{
+
+    res.json(await prepareData(parseInt(req.headers.device)))
+})
 module.exports = router
-
-/* TODO : Replace the body of the function with the request from the IOTA */
-
-router.post('/FetchData',async(req, res)=>{
-    res.json(prepareData(1))
-})
-
-router.post('/FetchData2',async(req, res)=>{
-    res.json([
-        {"DeviceID" : 3, "Timestamp" : "2022-06-20 10:12:20", "HeartBPM" : 80, "HeartPulse":true, "PWave" : true, "Sa02":98, "evnt":"RAS"},
-        {"DeviceID" : 3, "Timestamp" : "2022-06-20 10:12:25", "HeartBPM" : 80, "HeartPulse":true, "PWave" : true, "Sa02":99, "evnt":"RAS"},
-        {"DeviceID" : 3, "Timestamp" : "2022-06-20 10:12:30", "HeartBPM" : 85, "HeartPulse":true, "PWave" : true, "Sa02":98, "evnt":"RAS"},
-        {"DeviceID" : 3, "Timestamp" : "2022-06-20 10:12:35", "HeartBPM" : 92, "HeartPulse":true, "PWave" : false, "Sa02":97, "evnt":"PWave abnormal"},
-        {"DeviceID" : 3, "Timestamp" : "2022-06-20 10:12:40", "HeartBPM" : 0, "HeartPulse":true, "PWave" : true, "Sa02":98, "evnt":"Heart failure"},
-        {"DeviceID" : 3, "Timestamp" : "2022-06-20 10:12:30", "HeartBPM" : 85, "HeartPulse":true, "PWave" : true, "Sa02":98, "evnt":"RAS"}
-    ])
-})
