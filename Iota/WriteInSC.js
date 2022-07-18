@@ -21,7 +21,7 @@ async function addAdmin(add) {
 
 async function addDevice(dev){
     let acc = await web3.eth.getAccounts()
-    await ourSC.methods.addDevice(1).send({from:acc[0], gasLimit: '3000000'},function (err, res){
+    await ourSC.methods.addDevice(dev).send({from:acc[0], gasLimit: '3000000'},function (err, res){
         if (err) {
             console.log("An error occured", err)
             return

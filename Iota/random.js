@@ -28,17 +28,12 @@ function gaussian(mean, stdev) {
 
 
 
-var pwave = Boolean(Math.round(Math.random() > 0,9));
-var heartPulse = Boolean(Math.round(Math.random() > 0,9));
+var pwave = () => Boolean(Math.round(Math.random() > 0,9));
+var heartPulse = () => Boolean(Math.round(Math.random() > 0,9));
 var sao2 = gaussian(97.5, 3);
 var pressureS = gaussian(115, 25);
 var pressureD = gaussian(75, 15);
 var heartRythm = gaussian(80, 20);
 
 
-console.log("Pwave : " + pwave);
-console.log("Heart Pulse : " + heartPulse);
-console.log("Systolic Pressure : " + pressureS());
-console.log("Diastolic Pressure : " + pressureD());
-console.log("Heart Rythm : " + heartRythm());
-console.log("sao2 : " + sao2());
+
