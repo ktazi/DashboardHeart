@@ -50,7 +50,7 @@ const iota = Iota.composeAPI({
 const depth = 3;
 const minimumWeightMagnitude = 14;
 const seed = generate();
-const devs = [1,2]
+const devs = [1]
 setInterval(function () {
         const address = 'HEQLOWORLDHELLOWORLDHELLOWORLDHELLOWORLDHELLOWORLDHELLOWORLDHELLOWORLDHELLOWOR99D';
         for (var i = 0; i < devs.length; i++) {

@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Web3 = require('web3');
-var sc_ADDRESS = "0x8bc029F9DB91e35f4bB1CbA8697fBf5d93557A21";
+var sc_ADDRESS = "0x3AaED43bD945c8aaED76245750D691701D75b73B";
 var sc_ABI = require("../../smartContracts/ABI.json")
 var web3 = new Web3();
 web3.setProvider(new web3.providers.HttpProvider('HTTP://127.0.0.1:7545'));
