@@ -91,6 +91,7 @@ async function prepareData(dev){
     accounts = await web3.eth.getAccounts()
     accounts = accounts[0]
     var rec = await getRecords(dev)
+    //convert timestamp to date
     var evnt = await getEvents(dev)
     var res = []
     for (let i = 0; i < rec.length; i++){
